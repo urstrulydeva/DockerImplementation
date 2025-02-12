@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  # Node.js service
+  app:
+    build: .
+    container_name: node-app
+    ports:
+      - "3000:3000"  # Map port 3000 of the container to port 3000 on the host
+    depends_on:
+      - mongodb  # Ensure MongoDB starts before the app
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/mydatabase  # Connection string for MongoDB
+  
+  # MongoDB service
+  mongodb:
+    image: mongo:latest  # Use the official MongoDB image
+    container_name: mongodb
+    ports:
+      - "27017:27017"  # Expose MongoDB on port 27017
+    volumes:
+      - mongodb-data:/data/db  # Persist MongoDB data
+
+volumes:
+  mongodb-data:
+    driver: local
